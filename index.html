@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Letter Tracing</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    header {
+        background-color: #333;
+        color: #fff;
+        padding: 10px;
+    }
+    nav {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 10px;
+    }
+    nav #circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 10px;
+        overflow: hidden;
+        font-size: 20px;
+    }
+    #container {
+        text-align: center;
+        margin-top: 50px;
+    }
+    #clearBtn, #changeBtn {
+        margin-top: 10px;
+        padding: 8px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    #hjhj{
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+width: 40px;
+height: 40px;
+    }
+    #userForm{
+        padding: 10px;
+        background-color: red;
+        width: 300px;
+        height: 250px;
+        display: none;
+    }
+    #container{
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+    }
+    h2{
+        color: white;
+        font-weight: 800;
+    }
+    label{
+        color: #fff;
+    }
+    #cross{
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        background-color: black;
+        color: white;
+text-align: center;
+    }
+    .lop{
+        width: 100%;
+        text-align: right;
+    }
+    #fg{
+        padding: 5px 30px 5px 30px;
+        outline: none;
+        cursor: pointer;
+        border: none;
+        background-color: aqua;
+        border-radius: 9px;
+        color: white;
+        font-weight: 800;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <button id="yu">+</button>
+        <div id="circle"></div>
+    </nav>
+</header>
+
+<div id="container">
+    <form id="userForm">
+        <div class="lop"><button id="cross">X</button></div>
+        <h2>Fill The Form</h2>
+        <label for="">Name</label>
+        <input type="text" id="inputName" name="name" placeholder="Enter your name" required><br><br>
+        <label for="">Image</label>
+        <input type="file" id="inputPic" name="pic" accept="image/*"><br><br>
+        <button id="fg" >Submit</button>
+    </form>
+   
+</div>
+<!--  -->
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getDatabase, ref ,set, get,child } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDnitCvjQesCyX2ufmkgCbRpuAD4uMpJSU",
+      authDomain: "loginprofilez.firebaseapp.com",
+      projectId: "loginprofilez",
+      storageBucket: "loginprofilez.appspot.com",
+      messagingSenderId: "756587101533",
+      appId: "1:756587101533:web:83e130d05dfb9f3e2fbcb4"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    document.getElementById("fg").addEventListener("click",function(){
+        set(ref(db,"user/"+document.getElementById("inputName").value),{
+            username: document.getElementById("inputName").value,
+            image:document.getElementById("inputPic").value
+        })
+        alert("login sucessfull !")
+    })
+  </script>
+<!--  -->
+<script>
+    var cross = document.getElementById("cross");
+    cross.addEventListener("click",()=>{
+    document.getElementById("userForm").style.display="none"
+})
+var y = document.getElementById("yu").addEventListener("click",()=>{
+        document.getElementById("userForm").style.display="block"
+
+    })
+    
+document.getElementById("userForm").addEventListener("submit",function(e){
+e.preventDefault();
+var inpName = document.getElementById("inputName").value;
+var inpPic = document.getElementById("inputPic").files[0];
+var circle = document.getElementById("circle")
+if (inpName){
+    circle.textContent=inpName.charAt(0).toUpperCase();
+}else{
+    circle.textContent=""
+}
+if(inpPic){
+    circle.innerHTML=`
+    <img id="hjhj" src="${URL.createObjectURL(inpPic)}" />
+
+    `
+}
+saveData()
+})
+function saveData (){
+    localStorage.setItem("data",circle.innerHTML)
+}
+
+ function showProfile(){
+    circle.innerHTML=localStorage.getItem("data")
+ }
+ showProfile()
+</script>
+
+</body>
+</html>
